@@ -19,7 +19,7 @@ export default function ProcessingPage() {
     ]
 
     let totalTime = 0
-    stages.forEach((s, i) => {
+    stages.forEach((s) => {
       setTimeout(() => {
         setStage(s.name as typeof stage)
       }, totalTime)
@@ -138,7 +138,7 @@ export default function ProcessingPage() {
 
           {/* Stage Indicators */}
           <div className="flex justify-center gap-2 mb-8">
-            {(['encrypting', 'uploading', 'scanning', 'analyzing', 'complete'] as const).map((s, i) => {
+            {(['encrypting', 'uploading', 'scanning', 'analyzing', 'complete'] as const).map((s) => {
               const stages = ['encrypting', 'uploading', 'scanning', 'analyzing', 'complete']
               const currentIndex = stages.indexOf(stage)
               const stageIndex = stages.indexOf(s)

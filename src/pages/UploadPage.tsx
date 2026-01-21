@@ -34,7 +34,7 @@ export default function UploadPage() {
   // Recording refs
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const chunksRef = useRef<Blob[]>([])
-  const recordingIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const recordingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
 

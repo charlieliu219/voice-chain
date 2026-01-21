@@ -9,9 +9,7 @@ import {
   Code,
   CheckCircle,
   ArrowRight,
-  Play,
-  Users,
-  TrendingUp
+  Play
 } from 'lucide-react'
 
 export default function LandingPage() {

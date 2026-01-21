@@ -9,7 +9,6 @@ import {
   Calendar,
   Clock,
   CheckCircle,
-  XCircle,
   Plus,
   ThumbsDown
 } from 'lucide-react'

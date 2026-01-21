@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CheckCircle,
-  Circle,
   ArrowRight,
   ArrowLeft,
   Download,
@@ -15,7 +14,6 @@ import {
   Clock,
   Calendar,
   MessageSquare,
-  Users,
   ChevronDown,
   ChevronUp,
   Star

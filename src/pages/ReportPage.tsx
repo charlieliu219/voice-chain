@@ -7,7 +7,6 @@ import {
   Eye,
   Calendar,
   ExternalLink,
-  CheckSquare,
   Download,
   Filter,
   ArrowRight,
