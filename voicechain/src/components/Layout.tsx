@@ -1,11 +1,34 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { Shield, Menu, X } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+const STORAGE_KEY = 'voicechain_workflow_state'
+
+function getWorkflowProgress(): { step: number; total: number } | null {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      if (parsed.highestStepReached && parsed.highestStepReached > 1) {
+        return { step: parsed.currentStep || 1, total: 7 }
+      }
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+  return null
+}
 
 export default function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [workflowProgress, setWorkflowProgress] = useState<{ step: number; total: number } | null>(null)
   const location = useLocation()
   const isLandingPage = location.pathname === '/'
+
+  // Check workflow progress on mount and when location changes
+  useEffect(() => {
+    setWorkflowProgress(getWorkflowProgress())
+  }, [location])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -20,7 +43,7 @@ export default function Layout() {
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-6">
               <Link
                 to="/"
                 className={`font-medium transition-colors ${isLandingPage ? 'text-white/80 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}
@@ -38,6 +61,21 @@ export default function Layout() {
                 className={`font-medium transition-colors ${isLandingPage ? 'text-white/80 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}
               >
                 Report
+              </Link>
+              <Link
+                to="/action-workflow"
+                className={`font-medium transition-colors flex items-center gap-2 ${isLandingPage ? 'text-white/80 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}
+              >
+                Action Workflow
+                {workflowProgress && (
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
+                    isLandingPage
+                      ? 'bg-white/20 text-white'
+                      : 'bg-primary-100 text-primary-700'
+                  }`}>
+                    {workflowProgress.step}/{workflowProgress.total}
+                  </span>
+                )}
               </Link>
               <Link
                 to="/upload"
@@ -84,6 +122,18 @@ export default function Layout() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Report
+                </Link>
+                <Link
+                  to="/action-workflow"
+                  className="text-slate-600 hover:text-slate-900 font-medium flex items-center justify-between"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span>Action Workflow</span>
+                  {workflowProgress && (
+                    <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-primary-100 text-primary-700">
+                      Step {workflowProgress.step}/{workflowProgress.total}
+                    </span>
+                  )}
                 </Link>
                 <Link
                   to="/upload"

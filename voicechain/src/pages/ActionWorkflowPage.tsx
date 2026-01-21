@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CheckCircle,
@@ -24,10 +24,56 @@ import { mockMatches, legalPartners } from '../data/mockData'
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7
 
+const STORAGE_KEY = 'voicechain_workflow_state'
+
+interface WorkflowState {
+  currentStep: Step
+  selectedCases: string[]
+  highestStepReached: Step
+}
+
+function loadWorkflowState(): WorkflowState {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      return {
+        currentStep: parsed.currentStep || 1,
+        selectedCases: parsed.selectedCases || ['1', '2', '7'],
+        highestStepReached: parsed.highestStepReached || 1
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load workflow state:', e)
+  }
+  return { currentStep: 1, selectedCases: ['1', '2', '7'], highestStepReached: 1 }
+}
+
+function saveWorkflowState(state: WorkflowState) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+  } catch (e) {
+    console.error('Failed to save workflow state:', e)
+  }
+}
+
 export default function ActionWorkflowPage() {
-  const [currentStep, setCurrentStep] = useState<Step>(1)
-  const [selectedCases, setSelectedCases] = useState<string[]>(['1', '2', '7'])
+  const [currentStep, setCurrentStep] = useState<Step>(() => loadWorkflowState().currentStep)
+  const [selectedCases, setSelectedCases] = useState<string[]>(() => loadWorkflowState().selectedCases)
+  const [highestStepReached, setHighestStepReached] = useState<Step>(() => loadWorkflowState().highestStepReached)
   const [expandedTemplates, setExpandedTemplates] = useState<string[]>([])
+
+  // Save state whenever it changes
+  useEffect(() => {
+    saveWorkflowState({ currentStep, selectedCases, highestStepReached })
+  }, [currentStep, selectedCases, highestStepReached])
+
+  // Update highest step reached
+  useEffect(() => {
+    if (currentStep > highestStepReached) {
+      setHighestStepReached(currentStep)
+    }
+  }, [currentStep, highestStepReached])
 
   const steps = [
     { id: 1, label: 'Case Selection', shortLabel: 'Select' },
@@ -65,41 +111,67 @@ export default function ActionWorkflowPage() {
 
         {/* Step Progress */}
         <div className="card mb-8 overflow-x-auto">
+          {highestStepReached > 1 && (
+            <div className="mb-4 pb-4 border-b border-slate-200 flex items-center justify-between">
+              <p className="text-sm text-slate-600">
+                Your progress has been saved. You've reached step {highestStepReached} of 7.
+              </p>
+              <button
+                onClick={() => {
+                  localStorage.removeItem(STORAGE_KEY)
+                  setCurrentStep(1)
+                  setHighestStepReached(1)
+                  setSelectedCases(['1', '2', '7'])
+                }}
+                className="text-sm text-red-600 hover:text-red-700 font-medium"
+              >
+                Reset Progress
+              </button>
+            </div>
+          )}
           <div className="flex items-center justify-between min-w-[700px]">
-            {steps.map((step, index) => (
-              <div key={step.id} className="flex items-center">
-                <button
-                  onClick={() => setCurrentStep(step.id as Step)}
-                  className={`flex flex-col items-center ${
-                    currentStep === step.id ? 'opacity-100' : 'opacity-60 hover:opacity-80'
-                  }`}
-                >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 transition-all ${
-                    currentStep > step.id
-                      ? 'bg-green-500 text-white'
-                      : currentStep === step.id
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-slate-200 text-slate-600'
-                  }`}>
-                    {currentStep > step.id ? (
-                      <CheckCircle className="h-5 w-5" />
-                    ) : (
-                      <span className="font-semibold">{step.id}</span>
-                    )}
-                  </div>
-                  <span className={`text-xs font-medium ${
-                    currentStep === step.id ? 'text-primary-600' : 'text-slate-600'
-                  }`}>
-                    {step.shortLabel}
-                  </span>
-                </button>
-                {index < steps.length - 1 && (
-                  <div className={`w-16 h-0.5 mx-2 ${
-                    currentStep > step.id ? 'bg-green-500' : 'bg-slate-200'
-                  }`}></div>
-                )}
-              </div>
-            ))}
+            {steps.map((step, index) => {
+              const isCompleted = step.id < highestStepReached
+              const isCurrent = step.id === currentStep
+              const isReachable = step.id <= highestStepReached
+
+              return (
+                <div key={step.id} className="flex items-center">
+                  <button
+                    onClick={() => setCurrentStep(step.id as Step)}
+                    className={`flex flex-col items-center ${
+                      isCurrent ? 'opacity-100' : isReachable ? 'opacity-80 hover:opacity-100' : 'opacity-40'
+                    }`}
+                  >
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 transition-all ${
+                      isCompleted
+                        ? 'bg-green-500 text-white'
+                        : isCurrent
+                        ? 'bg-primary-600 text-white'
+                        : isReachable
+                        ? 'bg-primary-100 text-primary-600'
+                        : 'bg-slate-200 text-slate-600'
+                    }`}>
+                      {isCompleted ? (
+                        <CheckCircle className="h-5 w-5" />
+                      ) : (
+                        <span className="font-semibold">{step.id}</span>
+                      )}
+                    </div>
+                    <span className={`text-xs font-medium ${
+                      isCurrent ? 'text-primary-600' : isCompleted ? 'text-green-600' : 'text-slate-600'
+                    }`}>
+                      {step.shortLabel}
+                    </span>
+                  </button>
+                  {index < steps.length - 1 && (
+                    <div className={`w-16 h-0.5 mx-2 ${
+                      step.id < highestStepReached ? 'bg-green-500' : 'bg-slate-200'
+                    }`}></div>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
 
