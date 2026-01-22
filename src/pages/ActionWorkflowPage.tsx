@@ -173,6 +173,30 @@ export default function ActionWorkflowPage() {
           </div>
         </div>
 
+        {/* Money at Stake Summary - shown for all steps after Step 1 */}
+        {currentStep > 1 && selectedCases.length > 0 && (
+          <div className="bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 rounded-xl p-5 mb-8 shadow-sm">
+            <div className="flex items-center justify-between gap-8">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <Scale className="h-5 w-5 text-red-600" />
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500 font-medium">Selected Cases</p>
+                  <p className="text-2xl font-bold text-slate-900">{selectedCases.length}</p>
+                </div>
+              </div>
+              <div className="h-12 w-px bg-red-200"></div>
+              <div className="text-right">
+                <p className="text-sm text-slate-500 font-medium">Total Estimated Recovery</p>
+                <p className="text-2xl font-bold text-red-600">
+                  €{selectedMatches.reduce((sum, m) => sum + m.estimatedRevenue, 0).toLocaleString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Step Content */}
         <div className="card">
           {/* Step 1: Case Selection */}
@@ -732,7 +756,7 @@ Mit freundlichen Grüßen,
             ) : (
               <button className="btn-primary flex items-center gap-2">
                 <CheckCircle className="h-4 w-4" />
-                Complete Workflow
+                Go to Dashboard
               </button>
             )}
           </div>

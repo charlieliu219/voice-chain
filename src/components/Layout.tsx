@@ -77,12 +77,14 @@ export default function Layout() {
                   </span>
                 )}
               </Link>
-              <Link
-                to="/upload"
-                className={`${isLandingPage ? 'bg-white text-primary-600 hover:bg-slate-100' : 'bg-primary-600 text-white hover:bg-primary-700'} px-4 py-2 rounded-lg font-semibold transition-colors`}
-              >
-                Start Free Scan
-              </Link>
+              {isLandingPage && (
+                <Link
+                  to="/upload"
+                  className="bg-white text-primary-600 hover:bg-slate-100 px-4 py-2 rounded-lg font-semibold transition-colors"
+                >
+                  Start Free Scan
+                </Link>
+              )}
             </div>
 
             {/* Mobile menu button */}
@@ -135,13 +137,15 @@ export default function Layout() {
                     </span>
                   )}
                 </Link>
-                <Link
-                  to="/upload"
-                  className="bg-primary-600 text-white px-4 py-2 rounded-lg font-semibold text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Start Free Scan
-                </Link>
+                {isLandingPage && (
+                  <Link
+                    to="/upload"
+                    className="bg-primary-600 text-white px-4 py-2 rounded-lg font-semibold text-center"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Start Free Scan
+                  </Link>
+                )}
               </div>
             </div>
           )}
