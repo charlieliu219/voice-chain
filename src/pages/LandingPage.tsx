@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import {
-  Shield,
   Search,
   FileText,
   Scale,
@@ -9,56 +8,69 @@ import {
   Code,
   CheckCircle,
   ArrowRight,
-  Play
+  Play,
+  ChevronRight
 } from 'lucide-react'
+import Logo from '../components/Logo'
 
 export default function LandingPage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-accent-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
+      <section className="relative bg-slate-900 text-white overflow-hidden">
+        {/* Grid pattern background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
-                <span className="bg-green-500 h-2 w-2 rounded-full animate-pulse"></span>
-                <span className="text-sm">Trusted by 1,000+ creators in Germany & EU</span>
+              {/* Logo */}
+              <div className="mb-8">
+                <Logo className="h-10 w-10 text-indigo-400" />
+              </div>
+
+              {/* What's new badge */}
+              <div className="inline-flex items-center gap-3 mb-8">
+                <span className="bg-indigo-500/20 text-indigo-300 text-sm font-medium px-3 py-1 rounded-full">
+                  What's new
+                </span>
+                <span className="text-slate-400 text-sm flex items-center gap-1">
+                  Just shipped v0.1
+                  <ChevronRight className="h-4 w-4" />
+                </span>
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                Protect Your Voice in the Creator Economy
+                Protect your voice in an AI-driven world
               </h1>
 
-              <p className="text-xl text-white/80 mb-8 leading-relaxed">
-                AI voice cloning is being used to steal creator identities. VoiceChain detects unauthorized use of your voice on YouTube and guides you through the legal process to take it back.
+              <p className="text-xl text-slate-400 mb-10 leading-relaxed max-w-xl">
+                VoiceChain helps you detect, verify, and defend your voice identity. Stay in control — whether you're a creator, citizen, or enterprise.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row gap-4 mb-10">
                 <Link
                   to="/upload"
-                  className="bg-white text-primary-600 hover:bg-slate-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                  className="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
                 >
-                  Start Free Voice Scan
-                  <ArrowRight className="h-5 w-5" />
+                  Get started
                 </Link>
-                <button className="border-2 border-white/30 hover:border-white/50 px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center justify-center gap-2">
-                  <Play className="h-5 w-5" />
-                  Watch Demo
+                <button className="text-slate-300 hover:text-white px-6 py-3 font-semibold transition-all flex items-center justify-center gap-2">
+                  Learn more
+                  <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
 
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-sm text-white/70">
+              <div className="flex flex-wrap gap-6">
+                <div className="flex items-center gap-2 text-sm text-slate-500">
                   <Lock className="h-4 w-4" />
                   <span>Zero-Knowledge Encryption</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-white/70">
+                <div className="flex items-center gap-2 text-sm text-slate-500">
                   <Trash2 className="h-4 w-4" />
                   <span>Auto-Delete After Scan</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-white/70">
+                <div className="flex items-center gap-2 text-sm text-slate-500">
                   <Code className="h-4 w-4" />
                   <span>Open-Source Security</span>
                 </div>
@@ -67,19 +79,19 @@ export default function LandingPage() {
 
             <div className="hidden lg:block">
               <div className="relative">
-                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                <div className="bg-slate-800/50 backdrop-blur-lg rounded-2xl p-6 border border-slate-700">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-medium">Voice Detection Report</span>
-                    <span className="bg-red-500/20 text-red-300 text-xs px-2 py-1 rounded-full">3 Matches Found</span>
+                    <span className="text-sm font-medium text-slate-300">Voice Detection Report</span>
+                    <span className="bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded-full">3 Matches Found</span>
                   </div>
 
                   <div className="space-y-3">
                     {[94, 87, 76].map((confidence, i) => (
-                      <div key={i} className="bg-white/5 rounded-lg p-3 flex items-center gap-3">
+                      <div key={i} className="bg-slate-800 rounded-lg p-3 flex items-center gap-3">
                         <div className="w-16 h-10 bg-slate-700 rounded"></div>
                         <div className="flex-1">
-                          <div className="h-3 bg-white/20 rounded w-3/4 mb-1"></div>
-                          <div className="h-2 bg-white/10 rounded w-1/2"></div>
+                          <div className="h-3 bg-slate-600 rounded w-3/4 mb-1"></div>
+                          <div className="h-2 bg-slate-700 rounded w-1/2"></div>
                         </div>
                         <div className={`text-sm font-bold ${confidence >= 90 ? 'text-red-400' : confidence >= 80 ? 'text-yellow-400' : 'text-slate-400'}`}>
                           {confidence}%
@@ -88,9 +100,9 @@ export default function LandingPage() {
                     ))}
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-white/10">
+                  <div className="mt-4 pt-4 border-t border-slate-700">
                     <div className="flex justify-between text-sm">
-                      <span className="text-white/60">Estimated Revenue Loss</span>
+                      <span className="text-slate-500">Estimated Revenue Loss</span>
                       <span className="font-bold text-red-400">€4,138</span>
                     </div>
                   </div>
@@ -101,24 +113,24 @@ export default function LandingPage() {
         </div>
 
         {/* Stats bar */}
-        <div className="relative bg-white/10 backdrop-blur-sm border-t border-white/10">
+        <div className="relative bg-slate-800/50 backdrop-blur-sm border-t border-slate-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="text-3xl font-bold">400%</div>
-                <div className="text-white/60 text-sm">Increase in AI voice cloning (2024)</div>
+                <div className="text-3xl font-bold text-white">400%</div>
+                <div className="text-slate-500 text-sm">Increase in AI voice cloning (2024)</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold">€2.3M</div>
-                <div className="text-white/60 text-sm">Lost to voice fraud in EU</div>
+                <div className="text-3xl font-bold text-white">€2.3M</div>
+                <div className="text-slate-500 text-sm">Lost to voice fraud in EU</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold">80%+</div>
-                <div className="text-white/60 text-sm">Detection accuracy</div>
+                <div className="text-3xl font-bold text-white">80%+</div>
+                <div className="text-slate-500 text-sm">Detection accuracy</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold">1hr</div>
-                <div className="text-white/60 text-sm">Auto-delete guarantee</div>
+                <div className="text-3xl font-bold text-white">1hr</div>
+                <div className="text-slate-500 text-sm">Auto-delete guarantee</div>
               </div>
             </div>
           </div>
@@ -139,8 +151,8 @@ export default function LandingPage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="card hover:shadow-lg transition-shadow">
-              <div className="bg-primary-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
-                <Search className="h-7 w-7 text-primary-600" />
+              <div className="bg-indigo-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
+                <Search className="h-7 w-7 text-indigo-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">1. Detection & Reporting</h3>
               <ul className="space-y-3 text-slate-600">
@@ -159,9 +171,9 @@ export default function LandingPage() {
               </ul>
             </div>
 
-            <div className="card hover:shadow-lg transition-shadow border-2 border-primary-200">
-              <div className="bg-accent-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
-                <FileText className="h-7 w-7 text-accent-600" />
+            <div className="card hover:shadow-lg transition-shadow border-2 border-indigo-200">
+              <div className="bg-indigo-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
+                <FileText className="h-7 w-7 text-indigo-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">2. Guided Action Workflow</h3>
               <ul className="space-y-3 text-slate-600">
@@ -178,7 +190,7 @@ export default function LandingPage() {
                   <span>Progress tracking with deadline reminders</span>
                 </li>
               </ul>
-              <div className="mt-4 bg-primary-50 text-primary-700 text-sm px-3 py-2 rounded-lg">
+              <div className="mt-4 bg-indigo-50 text-indigo-700 text-sm px-3 py-2 rounded-lg">
                 Most Popular Feature
               </div>
             </div>
@@ -227,7 +239,7 @@ export default function LandingPage() {
                 description: 'Voice encrypted in your browser before upload'
               },
               {
-                icon: Shield,
+                icon: 'logo',
                 title: 'Zero-Knowledge Processing',
                 description: 'We process encrypted data - we never hear your voice'
               },
@@ -244,7 +256,11 @@ export default function LandingPage() {
             ].map((item, i) => (
               <div key={i} className="text-center">
                 <div className="bg-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
-                  <item.icon className="h-8 w-8 text-primary-600" />
+                  {item.icon === 'logo' ? (
+                    <Logo className="h-8 w-8 text-indigo-500" />
+                  ) : (
+                    <item.icon className="h-8 w-8 text-indigo-500" />
+                  )}
                 </div>
                 <h3 className="font-semibold text-slate-900 mb-2">{item.title}</h3>
                 <p className="text-slate-600 text-sm">{item.description}</p>
@@ -334,8 +350,8 @@ export default function LandingPage() {
               </Link>
             </div>
 
-            <div className="card border-2 border-primary-500 relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-500 text-white text-sm px-3 py-1 rounded-full">
+            <div className="card border-2 border-indigo-500 relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-sm px-3 py-1 rounded-full">
                 Most Popular
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Standard</h3>
@@ -396,17 +412,17 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-accent-600 text-white">
+      <section className="py-20 bg-slate-900 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Take Control of Your Voice Today
           </h2>
-          <p className="text-xl text-white/80 mb-8">
+          <p className="text-xl text-slate-400 mb-8">
             Join thousands of creators protecting their voice rights. Start your free scan now.
           </p>
           <Link
             to="/upload"
-            className="inline-flex items-center gap-2 bg-white text-primary-600 hover:bg-slate-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all shadow-lg hover:shadow-xl"
+            className="inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all shadow-lg hover:shadow-xl"
           >
             Start Free Voice Scan
             <ArrowRight className="h-5 w-5" />

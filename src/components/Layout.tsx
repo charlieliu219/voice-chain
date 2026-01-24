@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { Shield, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import Logo from './Logo'
 
 const STORAGE_KEY = 'voicechain_workflow_state'
 
@@ -36,7 +37,7 @@ export default function Layout() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center gap-2">
-              <Shield className={`h-8 w-8 ${isLandingPage ? 'text-white' : 'text-primary-600'}`} />
+              <Logo className={`h-8 w-8 ${isLandingPage ? 'text-indigo-400' : 'text-indigo-500'}`} />
               <span className={`text-xl font-bold ${isLandingPage ? 'text-white' : 'text-slate-900'}`}>
                 VoiceChain
               </span>
@@ -156,12 +157,12 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <footer className="bg-slate-900 text-white py-12">
+      <footer className="bg-slate-950 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Shield className="h-6 w-6 text-primary-400" />
+                <Logo className="h-6 w-6 text-indigo-400" />
                 <span className="text-lg font-bold">VoiceChain</span>
               </div>
               <p className="text-slate-400 text-sm">
