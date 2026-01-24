@@ -51,6 +51,25 @@ export default function MatchDetailPage() {
 
   const categoryInfo = getCategoryInfo(match.category)
 
+  // Convert timestamp string (e.g., "2:34" or "1:15:30") to seconds
+  const timestampToSeconds = (timestamp: string): number => {
+    const parts = timestamp.split(':').map(Number)
+    if (parts.length === 3) {
+      return parts[0] * 3600 + parts[1] * 60 + parts[2]
+    } else if (parts.length === 2) {
+      return parts[0] * 60 + parts[1]
+    }
+    return 0
+  }
+
+  // Generate YouTube URL with timestamp
+  const getVideoUrlWithTimestamp = (timestamp: string): string => {
+    const seconds = timestampToSeconds(timestamp)
+    const baseUrl = match.videoUrl
+    const separator = baseUrl.includes('?') ? '&' : '?'
+    return `${baseUrl}${separator}t=${seconds}`
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 py-8">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -242,9 +261,16 @@ export default function MatchDetailPage() {
                 <p className="text-sm font-medium text-slate-900 mb-2">Voice Detected at Timestamps:</p>
                 <div className="flex flex-wrap gap-2">
                   {match.matchTimestamps.map(timestamp => (
-                    <span key={timestamp} className="bg-slate-100 px-3 py-1 rounded-full text-sm text-slate-700">
+                    <a
+                      key={timestamp}
+                      href={getVideoUrlWithTimestamp(timestamp)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-slate-100 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-1 rounded-full text-sm text-slate-700 transition-colors cursor-pointer flex items-center gap-1"
+                    >
+                      <Play className="h-3 w-3" />
                       {timestamp}
-                    </span>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -303,7 +329,7 @@ export default function MatchDetailPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className="card">
+            {/* <div className="card">
               <h2 className="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h2>
 
               <div className="space-y-2">
@@ -330,7 +356,7 @@ export default function MatchDetailPage() {
                   View on YouTube
                 </a>
               </div>
-            </div>
+            </div> */}
 
             {/* Legal Notice */}
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">

@@ -11,7 +11,8 @@ import {
   Filter,
   Play,
   Pause,
-  Square
+  Square,
+  HelpCircle
 } from 'lucide-react'
 
 type Step = 'upload' | 'filters'
@@ -39,7 +40,6 @@ export default function UploadPage() {
   const [keywords, setKeywords] = useState('')
   const [channelSize, setChannelSize] = useState('1000')
   const [timeRange, setTimeRange] = useState('6')
-  const [specificChannels, setSpecificChannels] = useState('')
 
   // Cleanup audio URL on unmount or when file changes
   useEffect(() => {
@@ -452,16 +452,30 @@ export default function UploadPage() {
         {/* Step 2: Filters */}
         {currentStep === 'filters' && (
           <div className="card">
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Configure Smart Filters</h2>
-            <p className="text-slate-600 mb-6">
-              Narrow down the search to find relevant matches faster and reduce costs.
-            </p>
+            <div className="flex items-center gap-2 mb-2">
+              <h2 className="text-2xl font-bold text-slate-900">Configure Scan Filters</h2>
+              <div className="relative group">
+                <HelpCircle className="h-5 w-5 text-slate-400 hover:text-slate-600 cursor-help" />
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-slate-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-64 text-center z-10">
+                  Filters help narrow down the search range, making scans faster and more cost-effective by focusing on relevant channels and time periods.
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-slate-800"></div>
+                </div>
+              </div>
+            </div>
+
 
             <div className="space-y-6">
               {/* Keywords */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
                   Keywords / Topics
+                  <div className="relative group">
+                    <HelpCircle className="h-4 w-4 text-slate-400 hover:text-slate-600 cursor-help" />
+                    <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-slate-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-56 text-center z-10">
+                      Specify the topic or niche of videos to scan for potential voice clones.
+                      <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-slate-800"></div>
+                    </div>
+                  </div>
                 </label>
                 <input
                   type="text"
@@ -475,30 +489,44 @@ export default function UploadPage() {
                 </p>
               </div>
 
-              {/* Channel Size */}
+              {/* Minimum Video Views */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Minimum Channel Size
+                <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
+                  Minimum Video Views
+                  <div className="relative group">
+                    <HelpCircle className="h-4 w-4 text-slate-400 hover:text-slate-600 cursor-help" />
+                    <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-slate-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-56 text-center z-10">
+                      Only scan videos with at least this many views. Higher thresholds reduce scan time but may miss smaller infringements.
+                      <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-slate-800"></div>
+                    </div>
+                  </div>
                 </label>
                 <select
                   value={channelSize}
                   onChange={(e) => setChannelSize(e.target.value)}
                   className="input"
                 >
-                  <option value="0">All channels</option>
-                  <option value="1000">1,000+ subscribers</option>
-                  <option value="10000">10,000+ subscribers</option>
-                  <option value="100000">100,000+ subscribers</option>
+                  <option value="0">All videos</option>
+                  <option value="10000">10,000+ views</option>
+                  <option value="100000">100,000+ views</option>
+                  <option value="1000000">1,000,000+ views</option>
                 </select>
                 <p className="mt-1 text-sm text-slate-500">
-                  Skip smaller channels to reduce noise
+                  Skip low-view videos to focus on higher-impact matches
                 </p>
               </div>
 
               {/* Time Range */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
                   Time Range
+                  <div className="relative group">
+                    <HelpCircle className="h-4 w-4 text-slate-400 hover:text-slate-600 cursor-help" />
+                    <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-slate-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-56 text-center z-10">
+                      Only scan videos uploaded within this time period. Recent videos are more likely to be active infringements.
+                      <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-slate-800"></div>
+                    </div>
+                  </div>
                 </label>
                 <div className="flex gap-3">
                   {[
@@ -521,21 +549,6 @@ export default function UploadPage() {
                 </div>
               </div>
 
-              {/* Specific Channels */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Specific Channels (Optional)
-                </label>
-                <textarea
-                  value={specificChannels}
-                  onChange={(e) => setSpecificChannels(e.target.value)}
-                  placeholder="Paste YouTube channel URLs, one per line"
-                  className="input min-h-[100px]"
-                />
-                <p className="mt-1 text-sm text-slate-500">
-                  Target specific channels if you suspect certain creators
-                </p>
-              </div>
             </div>
 
             <div className="mt-8 flex justify-between">

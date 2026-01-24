@@ -85,7 +85,7 @@ export default function ReportPage() {
         </div>
 
         {/* Overview Cards */}
-        <div className="grid md:grid-cols-4 gap-4 mb-8">
+        <div className="grid md:grid-cols-3 gap-4 mb-8">
           <div className="card">
             <div className="flex items-center gap-3 mb-2">
               <Eye className="h-5 w-5 text-slate-500" />
@@ -116,7 +116,7 @@ export default function ReportPage() {
             </p>
           </div>
 
-          <div className="card">
+          {/* <div className="card">
             <div className="flex items-center gap-3 mb-2">
               <TrendingUp className="h-5 w-5 text-slate-500" />
               <span className="text-sm text-slate-600">Voice Usage Trend</span>
@@ -125,11 +125,11 @@ export default function ReportPage() {
               +{mockReport.trendPercentage}%
             </p>
             <p className="text-xs text-slate-500">vs last 6 months</p>
-          </div>
+          </div> */}
         </div>
 
         {/* Impact Assessment */}
-        <div className="card mb-8">
+        {/* <div className="card mb-8">
           <h2 className="text-lg font-semibold text-slate-900 mb-4">Impact Assessment</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="flex items-start gap-3">
@@ -163,7 +163,7 @@ export default function ReportPage() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Matches Table */}
         <div className="card">
@@ -259,12 +259,14 @@ export default function ReportPage() {
                       className="w-24 h-14 object-cover rounded"
                     />
                     <div className="flex-1 min-w-0">
-                      <Link
-                        to={`/report/${match.id}`}
+                      <a
+                        href={`${match.videoUrl}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="font-medium text-slate-900 hover:text-primary-600 truncate block"
                       >
                         {match.videoTitle}
-                      </Link>
+                      </a>
                       <div className="mt-1">
                         {getCategoryBadge(match.category)}
                       </div>
