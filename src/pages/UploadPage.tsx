@@ -6,18 +6,15 @@ import {
   FileAudio,
   X,
   Lock,
-  Trash2,
   ChevronRight,
-  Info,
   Search,
-  Clock,
   Filter,
   Play,
   Pause,
   Square
 } from 'lucide-react'
 
-type Step = 'upload' | 'filters' | 'review'
+type Step = 'upload' | 'filters'
 
 export default function UploadPage() {
   const navigate = useNavigate()
@@ -43,7 +40,6 @@ export default function UploadPage() {
   const [channelSize, setChannelSize] = useState('1000')
   const [timeRange, setTimeRange] = useState('6')
   const [specificChannels, setSpecificChannels] = useState('')
-  const [sensitivity, setSensitivity] = useState<'strict' | 'balanced' | 'broad'>('balanced')
 
   // Cleanup audio URL on unmount or when file changes
   useEffect(() => {
@@ -224,8 +220,7 @@ export default function UploadPage() {
 
   const steps = [
     { id: 'upload', label: 'Voice Sample', icon: Mic },
-    { id: 'filters', label: 'Smart Filters', icon: Filter },
-    { id: 'review', label: 'Review & Start', icon: Search }
+    { id: 'filters', label: 'Smart Filters', icon: Filter }
   ]
 
   return (
@@ -243,7 +238,7 @@ export default function UploadPage() {
               <div key={step.id} className="flex items-center">
                 <button
                   onClick={() => {
-                    if (step.id === 'upload' || (step.id === 'filters' && uploadedFile) || (step.id === 'review' && uploadedFile)) {
+                    if (step.id === 'upload' || (step.id === 'filters' && uploadedFile)) {
                       setCurrentStep(step.id as Step)
                     }
                   }}
@@ -551,128 +546,6 @@ export default function UploadPage() {
                 Back
               </button>
               <button
-                onClick={() => setCurrentStep('review')}
-                className="btn-primary flex items-center gap-2"
-              >
-                Review Settings
-                <ChevronRight className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 3: Review */}
-        {currentStep === 'review' && (
-          <div className="card">
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Review & Start Scan</h2>
-            <p className="text-slate-600 mb-6">
-              Confirm your settings and start the voice detection scan.
-            </p>
-
-            {/* Scan Summary */}
-            <div className="bg-slate-50 rounded-xl p-6 mb-6">
-              <h3 className="font-semibold text-slate-900 mb-4">Scan Summary</h3>
-              <div className="grid sm:grid-cols-3 gap-4">
-                <div className="bg-white rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-slate-500 mb-1">
-                    <Search className="h-4 w-4" />
-                    <span className="text-sm">Est. Videos</span>
-                  </div>
-                  <p className="text-2xl font-bold text-slate-900">~2,500</p>
-                </div>
-                <div className="bg-white rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-slate-500 mb-1">
-                    <Clock className="h-4 w-4" />
-                    <span className="text-sm">Processing Time</span>
-                  </div>
-                  <p className="text-2xl font-bold text-slate-900">6-12 hrs</p>
-                </div>
-                <div className="bg-white rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-slate-500 mb-1">
-                    <Filter className="h-4 w-4" />
-                    <span className="text-sm">Filters Applied</span>
-                  </div>
-                  <p className="text-2xl font-bold text-slate-900">3</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Sensitivity */}
-            <div className="mb-6">
-              <h3 className="font-semibold text-slate-900 mb-3">Detection Sensitivity</h3>
-              <div className="space-y-3">
-                {[
-                  { value: 'strict', label: 'Strict', desc: '90%+ confidence only - fewer matches, highest certainty', color: 'red' },
-                  { value: 'balanced', label: 'Balanced (Recommended)', desc: '80%+ confidence - good balance of matches and accuracy', color: 'yellow' },
-                  { value: 'broad', label: 'Broad', desc: '70%+ confidence - more matches, may include false positives', color: 'gray' }
-                ].map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => setSensitivity(option.value as typeof sensitivity)}
-                    className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
-                      sensitivity === option.value
-                        ? 'border-primary-500 bg-primary-50'
-                        : 'border-slate-200 hover:border-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-slate-900">{option.label}</p>
-                        <p className="text-sm text-slate-600">{option.desc}</p>
-                      </div>
-                      <div className={`w-4 h-4 rounded-full ${
-                        sensitivity === option.value ? 'bg-primary-500' : 'bg-slate-200'
-                      }`}></div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Email Notification */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Email for Notification
-              </label>
-              <input
-                type="email"
-                placeholder="your@email.com"
-                className="input"
-              />
-              <p className="mt-1 text-sm text-slate-500">
-                We'll notify you when the scan is complete
-              </p>
-            </div>
-
-            {/* Terms */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 flex gap-3">
-              <Info className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-amber-800">
-                <p className="font-medium mb-1">Important Disclaimers</p>
-                <ul className="list-disc list-inside space-y-1 text-amber-700">
-                  <li>VoiceChain provides informational tools, not legal advice</li>
-                  <li>Detection accuracy is 70-90%; false positives are possible</li>
-                  <li>Verify matches before taking action</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Privacy Reminder */}
-            <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg mb-8">
-              <Trash2 className="h-5 w-5 text-green-600" />
-              <p className="text-sm text-green-800">
-                <strong>Auto-Delete Enabled:</strong> Your voice sample will be permanently deleted within 1 hour of scan completion.
-              </p>
-            </div>
-
-            <div className="flex justify-between">
-              <button
-                onClick={() => setCurrentStep('filters')}
-                className="btn-secondary"
-              >
-                Back
-              </button>
-              <button
                 onClick={handleStartScan}
                 className="btn-primary flex items-center gap-2"
               >
@@ -682,6 +555,7 @@ export default function UploadPage() {
             </div>
           </div>
         )}
+
       </div>
     </div>
   )
