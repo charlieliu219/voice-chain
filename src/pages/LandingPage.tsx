@@ -8,7 +8,6 @@ import {
   Code,
   CheckCircle,
   ArrowRight,
-  Play,
   ChevronRight
 } from 'lucide-react'
 import Logo from '../components/Logo'
@@ -45,34 +44,41 @@ export default function LandingPage() {
               </h1>
 
               <p className="text-xl text-slate-400 mb-10 leading-relaxed max-w-xl">
-                VoiceChain helps you detect, verify, and defend your voice identity. Stay in control — whether you're a creator, citizen, or enterprise.
+                VoiceChain helps you detect, verify, and defend your voice identity. Our legal action workflow guides you step-by-step to claim your rights and compensation.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
                 <Link
                   to="/upload"
-                  className="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+                  className="group relative bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 hover:scale-105"
                 >
-                  Get started
+                  <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-400 to-indigo-500 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300"></span>
+                  <span className="relative flex items-center gap-2">
+                    Get started
+                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
                 </Link>
-                <button className="text-slate-300 hover:text-white px-6 py-3 font-semibold transition-all flex items-center justify-center gap-2">
+                <button className="text-slate-300 hover:text-white px-8 py-4 font-semibold transition-all flex items-center justify-center gap-2 hover:bg-white/5 rounded-xl">
                   Learn more
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
 
-              <div className="flex flex-wrap gap-6">
-                <div className="flex items-center gap-2 text-sm text-slate-500">
-                  <Lock className="h-4 w-4" />
-                  <span>Zero-Knowledge Encryption</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-slate-500">
-                  <Trash2 className="h-4 w-4" />
-                  <span>Auto-Delete After Scan</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-slate-500">
-                  <Code className="h-4 w-4" />
-                  <span>Open-Source Security</span>
+              <div>
+                <p className="text-s text-slate-500 uppercase tracking-wider mb-3">Our Privacy Policy</p>
+                <div className="flex flex-wrap gap-6">
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
+                    <Lock className="h-4 w-4" />
+                    <span>Zero-Knowledge Encryption</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
+                    <Trash2 className="h-4 w-4" />
+                    <span>Auto-Delete After Scan</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
+                    <Code className="h-4 w-4" />
+                    <span>Open-Source Security</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -345,13 +351,13 @@ export default function LandingPage() {
                   Basic report
                 </li>
               </ul>
-              <Link to="/upload" className="btn-secondary w-full block text-center">
+              <Link to="/upload" className="w-full block text-center py-3 px-6 rounded-xl border-2 border-slate-200 text-slate-700 font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all">
                 Get Started
               </Link>
             </div>
 
-            <div className="card border-2 border-indigo-500 relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-sm px-3 py-1 rounded-full">
+            <div className="card border-2 border-indigo-500 relative shadow-xl shadow-indigo-500/10">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white text-sm px-4 py-1 rounded-full font-medium">
                 Most Popular
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Standard</h3>
@@ -376,8 +382,11 @@ export default function LandingPage() {
                   Guided action workflow
                 </li>
               </ul>
-              <Link to="/upload" className="btn-primary w-full block text-center">
-                Start Standard
+              <Link to="/upload" className="group w-full block text-center py-3 px-6 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold hover:from-indigo-600 hover:to-indigo-700 transition-all shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 hover:scale-[1.02]">
+                <span className="flex items-center justify-center gap-2">
+                  Start Standard
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </span>
               </Link>
             </div>
 
@@ -403,7 +412,7 @@ export default function LandingPage() {
                   €120 legal consultation credit
                 </li>
               </ul>
-              <Link to="/upload" className="btn-secondary w-full block text-center">
+              <Link to="/upload" className="w-full block text-center py-3 px-6 rounded-xl border-2 border-slate-200 text-slate-700 font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all">
                 Start Pro
               </Link>
             </div>
@@ -412,20 +421,28 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-slate-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+      <section className="py-24 bg-slate-900 text-white relative overflow-hidden">
+        {/* Background glow effect */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-[600px] h-[600px] bg-indigo-500/20 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Take Control of Your Voice Today
           </h2>
-          <p className="text-xl text-slate-400 mb-8">
+          <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
             Join thousands of creators protecting their voice rights. Start your free scan now.
           </p>
           <Link
             to="/upload"
-            className="inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all shadow-lg hover:shadow-xl"
+            className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-10 py-5 rounded-xl font-semibold text-lg transition-all duration-300 shadow-xl shadow-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-500/40 hover:scale-105"
           >
-            Start Free Voice Scan
-            <ArrowRight className="h-5 w-5" />
+            <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-400 to-indigo-500 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300"></span>
+            <span className="relative flex items-center gap-2">
+              Start Free Voice Scan
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </span>
           </Link>
         </div>
       </section>
