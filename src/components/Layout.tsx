@@ -114,7 +114,7 @@ export default function Layout() {
                   to="/upload"
                   className="bg-white text-primary-600 hover:bg-slate-100 px-4 py-2 rounded-lg font-semibold transition-colors"
                 >
-                  Start Free Scan
+                  Start Free Trial
                 </Link>
               )}
             </div>
