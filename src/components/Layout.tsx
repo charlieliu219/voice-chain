@@ -11,7 +11,7 @@ function getWorkflowProgress(): { step: number; total: number } | null {
     if (saved) {
       const parsed = JSON.parse(saved)
       if (parsed.highestStepReached && parsed.highestStepReached > 1) {
-        return { step: parsed.currentStep || 1, total: 7 }
+        return { step: parsed.currentStep || 1, total: 6 }
       }
     }
   } catch (e) {

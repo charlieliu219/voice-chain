@@ -10,8 +10,6 @@ import {
   FileText,
   Scale,
   AlertTriangle,
-  Clock,
-  Calendar,
   MessageSquare,
   ChevronDown,
   ChevronUp,
@@ -21,7 +19,7 @@ import {
 } from 'lucide-react'
 import { mockMatches, legalPartners } from '../data/mockData'
 
-type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7
+type Step = 1 | 2 | 3 | 4 | 5 | 6
 
 const STORAGE_KEY = 'voicechain_workflow_state'
 
@@ -153,9 +151,8 @@ export default function ActionWorkflowPage() {
     { id: 2, label: 'Evidence Collection', shortLabel: 'Evidence' },
     { id: 3, label: 'Platform Reporting', shortLabel: 'Report' },
     { id: 4, label: 'Direct Outreach', shortLabel: 'Outreach' },
-    { id: 5, label: 'Wait & Monitor', shortLabel: 'Monitor' },
-    { id: 6, label: 'Escalation', shortLabel: 'Escalate' },
-    { id: 7, label: 'Legal Consultation', shortLabel: 'Legal' }
+    { id: 5, label: 'Escalation', shortLabel: 'Escalate' },
+    { id: 6, label: 'Legal Consultation', shortLabel: 'Legal' }
   ]
 
   const selectedMatches = mockMatches.filter(m => selectedCases.includes(m.id))
@@ -229,7 +226,7 @@ export default function ActionWorkflowPage() {
           {highestStepReached > 1 && (
             <div className="mb-4 pb-4 border-b border-slate-200 flex items-center justify-between">
               <p className="text-sm text-slate-600">
-                Your progress has been saved. You've reached step {highestStepReached} of 7.
+                Your progress has been saved. You've reached step {highestStepReached} of 6.
               </p>
               <button
                 onClick={() => {
@@ -650,75 +647,10 @@ I have not authorized [Channel Name] to use my voice in any capacity.`}
             </div>
           )}
 
-          {/* Step 5: Wait & Monitor */}
+          {/* Step 5: Escalation */}
           {currentStep === 5 && (
             <div>
-              <h2 className="text-xl font-bold text-slate-900 mb-2">Step 5: Wait & Monitor</h2>
-              <p className="text-slate-600 mb-6">
-                Track responses and set follow-up reminders. Most creators respond within 7-14 days.
-              </p>
-
-              <div className="space-y-4 mb-6">
-                {selectedMatches.slice(0, 3).map((match, i) => (
-                  <div key={match.id} className="border rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div>
-                        <p className="font-medium text-slate-900">{match.channelName}</p>
-                        <p className="text-sm text-slate-600">{match.videoTitle.slice(0, 50)}...</p>
-                      </div>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        i === 0 ? 'bg-green-100 text-green-700' :
-                        i === 1 ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-slate-100 text-slate-700'
-                      }`}>
-                        {i === 0 ? 'Responded' : i === 1 ? 'Awaiting' : 'Not Contacted'}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-4 text-sm text-slate-600">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>Contacted: Dec 10</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        <span>Follow-up: Dec 17</span>
-                      </div>
-                    </div>
-
-                    {i === 0 && (
-                      <div className="mt-3 pt-3 border-t border-slate-200">
-                        <p className="text-sm text-slate-700">
-                          <strong>Response:</strong> "Hi, I apologize for the confusion. I'll remove the video within 48 hours."
-                        </p>
-                        <div className="mt-2 flex gap-2">
-                          <button className="text-green-600 text-sm hover:underline">Mark Resolved</button>
-                          <button className="text-slate-600 text-sm hover:underline">Send Follow-up</button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <Clock className="h-5 w-5 text-primary-600 mt-0.5" />
-                  <div>
-                    <p className="font-medium text-primary-800">Automatic Reminders</p>
-                    <p className="text-sm text-primary-700">
-                      We'll send you email reminders when it's time to follow up or escalate.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Step 6: Escalation */}
-          {currentStep === 6 && (
-            <div>
-              <h2 className="text-xl font-bold text-slate-900 mb-2">Step 6: Escalation Decision</h2>
+              <h2 className="text-xl font-bold text-slate-900 mb-2">Step 5: Escalation Decision</h2>
               <p className="text-slate-600 mb-6">
                 Based on responses (or lack thereof), our system recommends next steps for each case.
               </p>
@@ -730,7 +662,15 @@ I have not authorized [Channel Name] to use my voice in any capacity.`}
                     <div>
                       <p className="font-semibold text-red-800">Escalate to Attorney</p>
                       <p className="text-sm text-red-700 mb-2">TechGuru Pro - No response after 14 days, high-value case (523K views)</p>
-                      <button className="btn-primary text-sm py-2">Connect with Legal Partner</button>
+                      <button
+                        onClick={() => {
+                          setCurrentStep(6)
+                          window.scrollTo({ top: 0, behavior: 'smooth' })
+                        }}
+                        className="btn-primary text-sm py-2"
+                      >
+                        Connect with Legal Partner
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -824,10 +764,10 @@ Mit freundlichen Grüßen,
             </div>
           )}
 
-          {/* Step 7: Legal Consultation */}
-          {currentStep === 7 && (
+          {/* Step 6: Legal Consultation */}
+          {currentStep === 6 && (
             <div>
-              <h2 className="text-xl font-bold text-slate-900 mb-2">Step 7: Legal Partner Consultation</h2>
+              <h2 className="text-xl font-bold text-slate-900 mb-2">Step 6: Legal Partner Consultation</h2>
               <p className="text-slate-600 mb-6">
                 Connect with vetted German IP attorneys who specialize in personality rights and digital media.
               </p>
@@ -925,10 +865,10 @@ Mit freundlichen Grüßen,
               Previous
             </button>
 
-            {currentStep < 7 ? (
+            {currentStep < 6 ? (
               <button
                 onClick={() => {
-                  setCurrentStep(prev => Math.min(7, prev + 1) as Step)
+                  setCurrentStep(prev => Math.min(6, prev + 1) as Step)
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
                 className="btn-primary flex items-center gap-2"
@@ -937,10 +877,10 @@ Mit freundlichen Grüßen,
                 <ArrowRight className="h-4 w-4" />
               </button>
             ) : (
-              <button className="btn-primary flex items-center gap-2">
+              <Link to="/dashboard" className="btn-primary flex items-center gap-2">
                 <CheckCircle className="h-4 w-4" />
                 Go to Dashboard
-              </button>
+              </Link>
             )}
           </div>
         </div>
