@@ -8,9 +8,7 @@ import {
   Eye,
   Calendar,
   Clock,
-  CheckCircle,
-  Plus,
-  ThumbsDown
+  Plus
 } from 'lucide-react'
 import { mockMatches } from '../data/mockData'
 

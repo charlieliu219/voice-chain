@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, LayoutDashboard } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import Logo from './Logo'
 
@@ -20,15 +20,30 @@ function getWorkflowProgress(): { step: number; total: number } | null {
   return null
 }
 
+function getSelectedCasesCount(): number {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      return parsed.selectedCases?.length || 0
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+  return 0
+}
+
 export default function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [workflowProgress, setWorkflowProgress] = useState<{ step: number; total: number } | null>(null)
+  const [selectedCasesCount, setSelectedCasesCount] = useState(0)
   const location = useLocation()
   const isLandingPage = location.pathname === '/'
 
-  // Check workflow progress on mount and when location changes
+  // Check workflow progress and selected cases on mount and when location changes
   useEffect(() => {
     setWorkflowProgress(getWorkflowProgress())
+    setSelectedCasesCount(getSelectedCasesCount())
   }, [location])
 
   return (
@@ -78,6 +93,22 @@ export default function Layout() {
                   </span>
                 )}
               </Link>
+              {selectedCasesCount > 0 && (
+                <Link
+                  to="/dashboard"
+                  className={`font-medium transition-colors flex items-center gap-2 ${isLandingPage ? 'text-white/80 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                  {/* <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
+                    isLandingPage
+                      ? 'bg-white/20 text-white'
+                      : 'bg-indigo-100 text-indigo-700'
+                  }`}>
+                    {selectedCasesCount}
+                  </span> */}
+                </Link>
+              )}
               {isLandingPage && (
                 <Link
                   to="/upload"
@@ -138,6 +169,21 @@ export default function Layout() {
                     </span>
                   )}
                 </Link>
+                {selectedCasesCount > 0 && (
+                  <Link
+                    to="/dashboard"
+                    className="text-slate-600 hover:text-slate-900 font-medium flex items-center justify-between"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <span className="flex items-center gap-2">
+                      <LayoutDashboard className="h-4 w-4" />
+                      Dashboard
+                    </span>
+                    <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-indigo-100 text-indigo-700">
+                      {selectedCasesCount} cases
+                    </span>
+                  </Link>
+                )}
                 {isLandingPage && (
                   <Link
                     to="/upload"
@@ -178,6 +224,7 @@ export default function Layout() {
                 <li><Link to="/upload" className="hover:text-white transition-colors">Voice Scan</Link></li>
                 <li><Link to="/report" className="hover:text-white transition-colors">Reports</Link></li>
                 <li><Link to="/action-workflow" className="hover:text-white transition-colors">Action Workflow</Link></li>
+                <li><Link to="/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
               </ul>
             </div>
             <div>

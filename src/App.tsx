@@ -6,6 +6,7 @@ import ProcessingPage from './pages/ProcessingPage'
 import ReportPage from './pages/ReportPage'
 import ActionWorkflowPage from './pages/ActionWorkflowPage'
 import MatchDetailPage from './pages/MatchDetailPage'
+import DashboardPage from './pages/DashboardPage'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="report" element={<ReportPage />} />
         <Route path="report/:matchId" element={<MatchDetailPage />} />
         <Route path="action-workflow" element={<ActionWorkflowPage />} />
+        <Route path="dashboard" element={<DashboardPage />} />
       </Route>
     </Routes>
   )

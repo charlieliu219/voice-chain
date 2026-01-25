@@ -737,7 +737,10 @@ Mit freundlichen Grüßen,
           {/* Navigation */}
           <div className="mt-8 pt-6 border-t border-slate-200 flex justify-between">
             <button
-              onClick={() => setCurrentStep(prev => Math.max(1, prev - 1) as Step)}
+              onClick={() => {
+                setCurrentStep(prev => Math.max(1, prev - 1) as Step)
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
               disabled={currentStep === 1}
               className="btn-secondary flex items-center gap-2 disabled:opacity-50"
             >
@@ -747,7 +750,10 @@ Mit freundlichen Grüßen,
 
             {currentStep < 7 ? (
               <button
-                onClick={() => setCurrentStep(prev => Math.min(7, prev + 1) as Step)}
+                onClick={() => {
+                  setCurrentStep(prev => Math.min(7, prev + 1) as Step)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
                 className="btn-primary flex items-center gap-2"
               >
                 Next Step
