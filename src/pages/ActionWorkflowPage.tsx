@@ -7,7 +7,6 @@ import {
   Download,
   Copy,
   ExternalLink,
-  Mail,
   FileText,
   Scale,
   AlertTriangle,
@@ -16,7 +15,9 @@ import {
   MessageSquare,
   ChevronDown,
   ChevronUp,
-  Star
+  Star,
+  Send,
+  User
 } from 'lucide-react'
 import { mockMatches, legalPartners } from '../data/mockData'
 
@@ -55,11 +56,85 @@ function saveWorkflowState(state: WorkflowState) {
   }
 }
 
+type EmailTone = 'friendly' | 'formal' | 'legal'
+
+interface EmailData {
+  to: string
+  subject: string
+  body: string
+  tone: EmailTone
+  sent: boolean
+}
+
+const getEmailTemplate = (match: typeof mockMatches[0], tone: EmailTone): { subject: string; body: string } => {
+  const subject = `Voice Usage in Your Video "${match.videoTitle}"`
+
+  const templates: Record<EmailTone, string> = {
+    friendly: `Hi there,
+
+I'm writing to you about your video "${match.videoTitle}" (${match.videoUrl}).
+
+I recently discovered that my voice appears to have been used in this content at timestamps ${match.matchTimestamps.join(', ')}. I didn't authorize this use, but I understand it may have been unintentional.
+
+Would you be open to discussing this? I'd appreciate if we could work out a solution together, whether that's:
+• Removing the affected segments
+• Adding proper credit and attribution
+• Or discussing a licensing arrangement
+
+I'd love to resolve this amicably. Looking forward to hearing from you!
+
+Best regards`,
+    formal: `Dear ${match.channelName},
+
+I am writing to formally notify you regarding the unauthorized use of my voice in your video titled "${match.videoTitle}" (${match.videoUrl}).
+
+Upon review, I have identified that my voice was used without my consent at the following timestamps: ${match.matchTimestamps.join(', ')}.
+
+Under German personality rights law (BGB §823) and EU GDPR Article 4(1) regarding biometric data, the use of my voice constitutes protected personal data.
+
+I request that you:
+1. Remove the video or affected segments within 7 days
+2. Provide written confirmation of compliance
+3. Refrain from any future unauthorized use of my voice
+
+Please respond to this message within 7 business days.
+
+Sincerely`,
+    legal: `NOTICE OF UNAUTHORIZED VOICE USE
+
+To: ${match.channelName}
+Re: Unauthorized Voice Use in "${match.videoTitle}"
+Video URL: ${match.videoUrl}
+Timestamps: ${match.matchTimestamps.join(', ')}
+
+This letter serves as formal notice that you have used my voice without authorization in the above-referenced video.
+
+LEGAL BASIS:
+• BGB §823 Abs. 1 (General Personality Rights)
+• BGB §1004 (Injunctive Relief)
+• Art. 4(1) DSGVO (Biometric Data Protection)
+
+DEMANDS:
+1. Immediate removal of the infringing content (within 7 days)
+2. Written confirmation of removal
+3. Undertaking to refrain from future unauthorized use
+4. Disclosure of any revenue generated from this content
+
+NOTICE: Failure to comply within 7 days will result in formal legal action, including but not limited to filing a cease and desist (Abmahnung) and pursuing remedies through the German court system.
+
+This notice is without prejudice to any rights and remedies available to me.`
+  }
+
+  return { subject, body: templates[tone] }
+}
+
 export default function ActionWorkflowPage() {
   const [currentStep, setCurrentStep] = useState<Step>(() => loadWorkflowState().currentStep)
   const [selectedCases, setSelectedCases] = useState<string[]>(() => loadWorkflowState().selectedCases)
   const [highestStepReached, setHighestStepReached] = useState<Step>(() => loadWorkflowState().highestStepReached)
   const [expandedTemplates, setExpandedTemplates] = useState<string[]>([])
+  const [senderEmail, setSenderEmail] = useState('')
+  const [emailData, setEmailData] = useState<Record<string, EmailData>>({})
 
   // Save state whenever it changes
   useEffect(() => {
@@ -93,6 +168,48 @@ export default function ActionWorkflowPage() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
+  }
+
+  // Initialize email data for a match if not exists
+  const getEmailDataForMatch = (match: typeof mockMatches[0]): EmailData => {
+    if (emailData[match.id]) {
+      return emailData[match.id]
+    }
+    const template = getEmailTemplate(match, 'friendly')
+    return {
+      to: match.channelEmail,
+      subject: template.subject,
+      body: template.body,
+      tone: 'friendly',
+      sent: false
+    }
+  }
+
+  const updateEmailData = (matchId: string, updates: Partial<EmailData>) => {
+    setEmailData(prev => ({
+      ...prev,
+      [matchId]: {
+        ...getEmailDataForMatch(mockMatches.find(m => m.id === matchId)!),
+        ...prev[matchId],
+        ...updates
+      }
+    }))
+  }
+
+  const handleToneChange = (match: typeof mockMatches[0], tone: EmailTone) => {
+    const template = getEmailTemplate(match, tone)
+    updateEmailData(match.id, {
+      tone,
+      subject: template.subject,
+      body: template.body
+    })
+  }
+
+  const handleSendEmail = (match: typeof mockMatches[0]) => {
+    const data = getEmailDataForMatch(match)
+    const mailtoUrl = `mailto:${data.to}?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(data.body)}`
+    window.open(mailtoUrl, '_blank')
+    updateEmailData(match.id, { sent: true })
   }
 
   return (
@@ -286,7 +403,7 @@ export default function ActionWorkflowPage() {
                   { id: 'harm', label: 'Document any harm caused', desc: 'Lost revenue, reputation damage, confusion among audience' }
                 ].map((item, index) => (
                   <div key={item.id} className="flex items-start gap-3 p-4 border rounded-lg">
-                    <input type="checkbox" className="mt-1 rounded border-slate-300" />
+                    <input type="checkbox" defaultChecked className="mt-1 rounded border-slate-300" />
                     <div className="flex-1">
                       <p className="font-medium text-slate-900">{item.label}</p>
                       <p className="text-sm text-slate-600">{item.desc}</p>
@@ -358,7 +475,7 @@ I have not authorized [Channel Name] to use my voice in any capacity.`}
                 </div>
               </div>
 
-              <div className="bg-slate-50 rounded-lg p-4">
+              {/* <div className="bg-slate-50 rounded-lg p-4">
                 <h4 className="font-medium text-slate-900 mb-2">Track Submissions</h4>
                 <div className="space-y-2">
                   {selectedMatches.slice(0, 3).map(match => (
@@ -372,7 +489,7 @@ I have not authorized [Channel Name] to use my voice in any capacity.`}
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
           )}
 
@@ -381,94 +498,154 @@ I have not authorized [Channel Name] to use my voice in any capacity.`}
             <div>
               <h2 className="text-xl font-bold text-slate-900 mb-2">Step 4: Contact Creators Directly</h2>
               <p className="text-slate-600 mb-6">
-                Many cases can be resolved with direct communication. Choose your tone and send an outreach message.
+                Many cases can be resolved with direct communication. Send personalized outreach emails to each creator.
               </p>
 
-              <div className="border rounded-lg mb-6">
-                <button
-                  onClick={() => toggleTemplate('email')}
-                  className="w-full flex items-center justify-between p-4 text-left"
-                >
-                  <div className="flex items-center gap-3">
-                    <Mail className="h-5 w-5 text-slate-500" />
-                    <span className="font-medium text-slate-900">Email/Message Template</span>
-                  </div>
-                  {expandedTemplates.includes('email') ? (
-                    <ChevronUp className="h-5 w-5 text-slate-500" />
-                  ) : (
-                    <ChevronDown className="h-5 w-5 text-slate-500" />
-                  )}
-                </button>
-
-                {expandedTemplates.includes('email') && (
-                  <div className="px-4 pb-4">
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-slate-700 mb-2">Tone</label>
-                      <div className="flex gap-2">
-                        {['Friendly', 'Formal', 'Legal'].map(tone => (
-                          <button
-                            key={tone}
-                            className="px-4 py-2 border rounded-lg text-sm hover:bg-slate-50"
-                          >
-                            {tone}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <textarea
-                      className="input min-h-[200px] font-mono text-sm"
-                      defaultValue={`Subject: Voice Usage in Your Video "[Video Title]"
-
-Hi [Creator Name],
-
-I'm [Your Name], and I recently discovered that my voice was used in your video "[Video Title]" ([Video URL]). I did not authorize this use.
-
-I understand this may have been unintentional, but as my voice is protected under German personality rights law (BGB §823), I need to address this.
-
-I'd appreciate if you could:
-☐ Remove the video within 7 days
-☐ Credit me and add a link to my channel
-☐ Discuss potential licensing terms
-
-If I don't hear back by [Date + 7 days], I'll need to pursue formal action through YouTube's copyright system.
-
-Thanks for understanding,
-[Your Name]`}
-                    />
-
-                    <div className="mt-3 flex gap-2">
-                      <button
-                        onClick={() => copyToClipboard('')}
-                        className="btn-secondary text-sm py-2 px-3 flex items-center gap-1"
-                      >
-                        <Copy className="h-4 w-4" />
-                        Copy Template
-                      </button>
-                    </div>
-                  </div>
-                )}
+              {/* Your Email Address */}
+              <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <User className="h-5 w-5 text-primary-600" />
+                  <label className="font-medium text-primary-800">Your Email Address</label>
+                </div>
+                <input
+                  type="email"
+                  value={senderEmail}
+                  onChange={(e) => setSenderEmail(e.target.value)}
+                  placeholder="your.email@example.com"
+                  className="input w-full md:w-96"
+                />
+                <p className="text-sm text-primary-700 mt-2">
+                  This will be used as the reply-to address for all outreach emails.
+                </p>
               </div>
 
-              <div className="bg-slate-50 rounded-lg p-4">
-                <h4 className="font-medium text-slate-900 mb-3">Outreach Tracker</h4>
-                <p className="text-sm text-slate-600 mb-3">Track your communications for each case:</p>
-                {selectedMatches.slice(0, 3).map(match => (
-                  <div key={match.id} className="flex items-center justify-between py-3 border-b border-slate-200 last:border-0">
-                    <span className="text-slate-700">{match.channelName}</span>
-                    <div className="flex items-center gap-2">
-                      <select className="text-sm border rounded px-2 py-1">
-                        <option>Not Contacted</option>
-                        <option>Message Sent</option>
-                        <option>Awaiting Response</option>
-                        <option>Responded</option>
-                      </select>
-                      <button className="text-primary-600 text-sm hover:underline">
-                        Log Response
+              {/* Email Forms for Each Case */}
+              <div className="space-y-4">
+                {selectedMatches.map(match => {
+                  const data = getEmailDataForMatch(match)
+                  const isExpanded = expandedTemplates.includes(`email-${match.id}`)
+
+                  return (
+                    <div key={match.id} className="border rounded-lg overflow-hidden">
+                      {/* Case Header */}
+                      <button
+                        onClick={() => toggleTemplate(`email-${match.id}`)}
+                        className="w-full flex items-center justify-between p-4 text-left bg-slate-50 hover:bg-slate-100 transition-colors"
+                      >
+                        <div className="flex items-center gap-4">
+                          <img src={match.thumbnail} alt="" className="w-16 h-10 object-cover rounded" />
+                          <div>
+                            <p className="font-medium text-slate-900">{match.channelName}</p>
+                            <p className="text-sm text-slate-600">{match.channelEmail}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          {data.sent && (
+                            <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-medium flex items-center gap-1">
+                              <CheckCircle className="h-3 w-3" />
+                              Sent
+                            </span>
+                          )}
+                          {isExpanded ? (
+                            <ChevronUp className="h-5 w-5 text-slate-500" />
+                          ) : (
+                            <ChevronDown className="h-5 w-5 text-slate-500" />
+                          )}
+                        </div>
                       </button>
+
+                      {/* Expanded Email Form */}
+                      {isExpanded && (
+                        <div className="p-4 border-t border-slate-200">
+                          {/* Tone Selector */}
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-slate-700 mb-2">Email Tone</label>
+                            <div className="flex gap-2">
+                              {(['friendly', 'formal', 'legal'] as EmailTone[]).map(tone => (
+                                <button
+                                  key={tone}
+                                  onClick={() => handleToneChange(match, tone)}
+                                  className={`px-4 py-2 border rounded-lg text-sm capitalize transition-colors ${
+                                    data.tone === tone
+                                      ? 'bg-primary-600 text-white border-primary-600'
+                                      : 'hover:bg-slate-50 border-slate-300'
+                                  }`}
+                                >
+                                  {tone}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* To Field */}
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-slate-700 mb-1">To</label>
+                            <input
+                              type="email"
+                              value={data.to}
+                              onChange={(e) => updateEmailData(match.id, { to: e.target.value })}
+                              className="input w-full"
+                            />
+                          </div>
+
+                          {/* Subject Field */}
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Subject</label>
+                            <input
+                              type="text"
+                              value={data.subject}
+                              onChange={(e) => updateEmailData(match.id, { subject: e.target.value })}
+                              className="input w-full"
+                            />
+                          </div>
+
+                          {/* Body Field */}
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Message</label>
+                            <textarea
+                              value={data.body}
+                              onChange={(e) => updateEmailData(match.id, { body: e.target.value })}
+                              className="input min-h-[250px] font-mono text-sm w-full"
+                            />
+                          </div>
+
+                          {/* Actions */}
+                          <div className="flex items-center gap-3">
+                            <button
+                              onClick={() => handleSendEmail(match)}
+                              className="btn-primary flex items-center gap-2"
+                            >
+                              <Send className="h-4 w-4" />
+                              Send Email
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(data.body)}
+                              className="btn-secondary flex items-center gap-2"
+                            >
+                              <Copy className="h-4 w-4" />
+                              Copy to Clipboard
+                            </button>
+                          </div>
+
+                          {data.sent && (
+                            <p className="text-sm text-green-600 mt-3 flex items-center gap-1">
+                              <CheckCircle className="h-4 w-4" />
+                              Email opened in your email client. Mark as sent once delivered.
+                            </p>
+                          )}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
+              </div>
+
+              {/* Tips Section */}
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-6">
+                <p className="text-amber-800 text-sm">
+                  <strong>Tip:</strong> Start with a friendly tone - most creators will cooperate when approached professionally.
+                  Escalate to formal or legal tone only if there's no response after 7-14 days.
+                </p>
               </div>
             </div>
           )}

@@ -9,7 +9,6 @@ import {
   Scale,
   CheckCircle,
   Circle,
-  ExternalLink,
   ArrowRight,
   Plus
 } from 'lucide-react'

@@ -4,6 +4,7 @@ export interface Match {
   videoTitle: string
   channelName: string
   channelUrl: string
+  channelEmail: string
   videoUrl: string
   uploadDate: string
   confidence: number
@@ -33,6 +34,7 @@ export const mockMatches: Match[] = [
     videoTitle: 'AI Voice Tutorial: How to Clone Any Voice in Minutes',
     channelName: 'TechGuru Pro',
     channelUrl: 'https://youtube.com/@techgurupro',
+    channelEmail: 'contact@techgurupro.com',
     videoUrl: 'https://youtube.com/watch?v=abc123',
     uploadDate: '2025-12-01',
     confidence: 94,
@@ -49,6 +51,7 @@ export const mockMatches: Match[] = [
     videoTitle: 'Best Gaming Commentary Compilation 2025',
     channelName: 'GameStream Daily',
     channelUrl: 'https://youtube.com/@gamestreamdaily',
+    channelEmail: 'business@gamestreamdaily.com',
     videoUrl: 'https://youtube.com/watch?v=def456',
     uploadDate: '2025-11-28',
     confidence: 91,
@@ -65,6 +68,7 @@ export const mockMatches: Match[] = [
     videoTitle: 'Product Review: New Tech Gadgets You Need',
     channelName: 'ReviewMaster',
     channelUrl: 'https://youtube.com/@reviewmaster',
+    channelEmail: 'hello@reviewmaster.net',
     videoUrl: 'https://youtube.com/watch?v=ghi789',
     uploadDate: '2025-11-15',
     confidence: 87,
@@ -81,6 +85,7 @@ export const mockMatches: Match[] = [
     videoTitle: 'Podcast Episode: The Future of Content Creation',
     channelName: 'Digital Talks',
     channelUrl: 'https://youtube.com/@digitaltalks',
+    channelEmail: 'info@digitaltalks.io',
     videoUrl: 'https://youtube.com/watch?v=jkl012',
     uploadDate: '2025-11-10',
     confidence: 84,
@@ -97,6 +102,7 @@ export const mockMatches: Match[] = [
     videoTitle: 'Educational Video: Learning German for Beginners',
     channelName: 'LanguageLab',
     channelUrl: 'https://youtube.com/@languagelab',
+    channelEmail: 'support@languagelab.edu',
     videoUrl: 'https://youtube.com/watch?v=mno345',
     uploadDate: '2025-10-25',
     confidence: 79,
@@ -113,6 +119,7 @@ export const mockMatches: Match[] = [
     videoTitle: 'ASMR Relaxation: Gentle Voice for Sleep',
     channelName: 'CalmSounds',
     channelUrl: 'https://youtube.com/@calmsounds',
+    channelEmail: 'calmsounds.asmr@gmail.com',
     videoUrl: 'https://youtube.com/watch?v=pqr678',
     uploadDate: '2025-10-18',
     confidence: 76,
@@ -129,6 +136,7 @@ export const mockMatches: Match[] = [
     videoTitle: 'Breaking News Commentary: Tech Industry Update',
     channelName: 'NewsFlash',
     channelUrl: 'https://youtube.com/@newsflash',
+    channelEmail: 'press@newsflash.media',
     videoUrl: 'https://youtube.com/watch?v=stu901',
     uploadDate: '2025-12-05',
     confidence: 92,
