@@ -231,6 +231,38 @@ export default function UploadPage() {
           <audio ref={audioRef} src={audioUrl} preload="metadata" />
         )}
 
+        {/* Overview Section */}
+        <div className="mb-10 text-center">
+          <h1 className="text-3xl font-bold text-slate-900 mb-3">Scan for Voice Clones</h1>
+          <p className="text-slate-600 max-w-2xl mx-auto mb-6">
+            Detect unauthorized AI-generated copies of your voice across YouTube in two simple steps.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            <div className="bg-white border border-slate-200 rounded-xl p-4 text-left">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="bg-primary-100 p-2 rounded-lg">
+                  <Mic className="h-5 w-5 text-primary-600" />
+                </div>
+                <h3 className="font-semibold text-slate-900">1. Upload Your Voice</h3>
+              </div>
+              <p className="text-sm text-slate-600">
+                We create a unique voiceprint from your sample to match against millions of videos. Your audio stays encrypted and is auto-deleted after the scan.
+              </p>
+            </div>
+            <div className="bg-white border border-slate-200 rounded-xl p-4 text-left">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="bg-primary-100 p-2 rounded-lg">
+                  <Filter className="h-5 w-5 text-primary-600" />
+                </div>
+                <h3 className="font-semibold text-slate-900">2. Set Filters</h3>
+              </div>
+              <p className="text-sm text-slate-600">
+                Narrow down the search by topic, views, and date range. This makes scans faster, cheaper, and focused on the most likely infringements.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Progress Steps */}
         <div className="mb-12">
           <div className="flex items-center justify-center">

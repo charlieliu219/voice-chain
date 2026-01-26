@@ -64,19 +64,22 @@ export default function LandingPage() {
                 </button>
               </div>
 
-              <div>
-                <p className="text-s text-slate-500 uppercase tracking-wider mb-3">Our Privacy Policy</p>
-                <div className="flex flex-wrap gap-6">
-                  <div className="flex items-center gap-2 text-sm text-slate-400">
-                    <Lock className="h-4 w-4" />
+              <div className="bg-slate-800/60 border border-cyan-500/30 rounded-xl p-4 backdrop-blur-sm">
+                <p className="inline-flex items-center gap-2 text-sm text-cyan-400 font-semibold mb-3">
+                  <Lock className="h-4 w-4" />
+                  Our Privacy Policy
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <Lock className="h-4 w-4 text-cyan-500" />
                     <span>Zero-Knowledge Encryption</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-slate-400">
-                    <Trash2 className="h-4 w-4" />
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <Trash2 className="h-4 w-4 text-cyan-500" />
                     <span>Auto-Delete After Scan</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-slate-400">
-                    <Code className="h-4 w-4" />
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <Code className="h-4 w-4 text-cyan-500" />
                     <span>Open-Source Security</span>
                   </div>
                 </div>

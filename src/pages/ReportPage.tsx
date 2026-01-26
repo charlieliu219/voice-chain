@@ -318,16 +318,67 @@ export default function ReportPage() {
             ))}
           </div>
 
-          {/* Action CTA */}
-          <div className="mt-8 pt-6 border-t border-slate-200">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div>
-                <h3 className="font-semibold text-slate-900">Ready to Take Action?</h3>
-                <p className="text-slate-600 text-sm">Select matches above or proceed with all high-priority cases</p>
+        </div>
+
+        {/* Action Workflow CTA Section */}
+        <div className="card mt-8 bg-gradient-to-br from-primary-50 to-slate-50 border-primary-200">
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-slate-900 mb-2">Take Action on Your Matches</h2>
+              <p className="text-slate-600 mb-4">
+                Our Action Workflow guides you through protecting your voice rights with automated tools and professional support.
+              </p>
+
+              <div className="grid sm:grid-cols-2 gap-3 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary-100 p-1.5 rounded-lg mt-0.5">
+                    <AlertTriangle className="h-4 w-4 text-primary-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-slate-900 text-sm">DMCA Takedown Requests</p>
+                    <p className="text-slate-500 text-xs">Auto-generated legal notices sent directly to platforms</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary-100 p-1.5 rounded-lg mt-0.5">
+                    <DollarSign className="h-4 w-4 text-primary-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-slate-900 text-sm">Revenue Recovery</p>
+                    <p className="text-slate-500 text-xs">Claim ad revenue from infringing videos</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary-100 p-1.5 rounded-lg mt-0.5">
+                    <Shield className="h-4 w-4 text-primary-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-slate-900 text-sm">Legal Escalation</p>
+                    <p className="text-slate-500 text-xs">Connect with IP attorneys for serious cases</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary-100 p-1.5 rounded-lg mt-0.5">
+                    <Eye className="h-4 w-4 text-primary-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-slate-900 text-sm">Ongoing Monitoring</p>
+                    <p className="text-slate-500 text-xs">Get alerts when new matches are detected</p>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <div className="flex flex-col justify-center lg:border-l lg:border-primary-200 lg:pl-6">
+              <p className="text-sm text-slate-600 mb-3 text-center lg:text-left">
+                {selectedMatches.length > 0
+                  ? `${selectedMatches.length} match${selectedMatches.length > 1 ? 'es' : ''} selected`
+                  : 'Select matches above or start with all cases'
+                }
+              </p>
               <button
                 onClick={() => navigate('/action-workflow')}
-                className="btn-primary flex items-center gap-2"
+                className="btn-primary flex items-center justify-center gap-2 whitespace-nowrap"
               >
                 Start Action Workflow
                 <ArrowRight className="h-4 w-4" />
