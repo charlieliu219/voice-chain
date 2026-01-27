@@ -259,7 +259,7 @@ export default function DashboardPage() {
                                   rel="noopener noreferrer"
                                   className="font-medium text-slate-900 text-sm line-clamp-1 hover:text-indigo-600 transition-colors"
                                 >
-                                  {match.videoTitle}
+                                  {/* {match.videoTitle} */}
                                 </a>
                                 <a
                                   href={match.channelUrl}

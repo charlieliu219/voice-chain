@@ -7,6 +7,7 @@ import ReportPage from './pages/ReportPage'
 import ActionWorkflowPage from './pages/ActionWorkflowPage'
 import MatchDetailPage from './pages/MatchDetailPage'
 import DashboardPage from './pages/DashboardPage'
+import AboutPage from './pages/AboutPage'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="report/:matchId" element={<MatchDetailPage />} />
         <Route path="action-workflow" element={<ActionWorkflowPage />} />
         <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="about" element={<AboutPage />} />
       </Route>
     </Routes>
   )

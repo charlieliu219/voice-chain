@@ -78,6 +78,7 @@ export default function Layout() {
               >
                 Report
               </Link>
+
               <Link
                 to="/action-workflow"
                 className={`font-medium transition-colors flex items-center gap-2 ${isLandingPage ? 'text-white/80 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}
@@ -109,14 +110,20 @@ export default function Layout() {
                   </span> */}
                 </Link>
               )}
-              {isLandingPage && (
+              {/* {isLandingPage && (
                 <Link
                   to="/upload"
                   className="bg-white text-primary-600 hover:bg-slate-100 px-4 py-2 rounded-lg font-semibold transition-colors"
                 >
                   Start Free Trial
                 </Link>
-              )}
+              )} */}
+              <Link
+                to="/about"
+                className={`font-medium transition-colors ${isLandingPage ? 'text-white/80 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}
+              >
+                About
+              </Link>
             </div>
 
             {/* Mobile menu button */}
@@ -156,6 +163,13 @@ export default function Layout() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Report
+                </Link>
+                <Link
+                  to="/about"
+                  className="text-slate-600 hover:text-slate-900 font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  About
                 </Link>
                 <Link
                   to="/action-workflow"

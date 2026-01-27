@@ -40,11 +40,11 @@ export default function LandingPage() {
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                Protect your voice in an AI-driven world
+                Defend your voice against unauthorized use 
               </h1>
 
               <p className="text-xl text-slate-400 mb-10 leading-relaxed max-w-xl">
-                VoiceChain helps you detect, verify, and defend your voice identity. Our legal action workflow guides you step-by-step to claim your rights and compensation.
+                VoiceChain helps you detect, verify, and defend your voice identity with one-stop action plan guiding you to claim your rights and compensation.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
@@ -58,10 +58,13 @@ export default function LandingPage() {
                     <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Link>
-                <button className="text-slate-300 hover:text-white px-8 py-4 font-semibold transition-all flex items-center justify-center gap-2 hover:bg-white/5 rounded-xl">
-                  Learn more
+                <Link
+                  to="/about"
+                  className="text-slate-300 hover:text-white px-8 py-4 font-semibold transition-all flex items-center justify-center gap-2 hover:bg-white/5 rounded-xl"
+                >
+                  Learn more about us
                   <ArrowRight className="h-4 w-4" />
-                </button>
+                </Link>
               </div>
 
               <div className="bg-slate-800/60 border border-cyan-500/30 rounded-xl p-4 backdrop-blur-sm">
@@ -124,22 +127,22 @@ export default function LandingPage() {
         {/* Stats bar */}
         <div className="relative bg-slate-800/50 backdrop-blur-sm border-t border-slate-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              <div className="text-center">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+              {/* <div className="text-center">
                 <div className="text-3xl font-bold text-white">400%</div>
                 <div className="text-slate-500 text-sm">Increase in AI voice cloning (2024)</div>
-              </div>
+              </div> */}
               <div className="text-center">
-                <div className="text-3xl font-bold text-white">€2.3M</div>
+                <div className="text-3xl font-bold text-white">€23M</div>
                 <div className="text-slate-500 text-sm">Lost to voice fraud in EU</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-white">80%+</div>
+                <div className="text-3xl font-bold text-white">90%+</div>
                 <div className="text-slate-500 text-sm">Detection accuracy</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">1hr</div>
-                <div className="text-slate-500 text-sm">Auto-delete guarantee</div>
+                <div className="text-slate-500 text-sm">Time of keeping your voice data</div>
               </div>
             </div>
           </div>
@@ -163,7 +166,7 @@ export default function LandingPage() {
               <div className="bg-indigo-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
                 <Search className="h-7 w-7 text-indigo-600" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">1. Detection & Reporting</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">1. Misuse Detection & Reporting</h3>
               <ul className="space-y-3 text-slate-600">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
@@ -228,6 +231,52 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              Trusted by Content Creators
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: "VoiceChain found 12 videos using my cloned voice. The action workflow helped me get 10 of them removed within 2 weeks.",
+                author: "Marco S.",
+                role: "Tech YouTuber, 500K subscribers"
+              },
+              {
+                quote: "As a voice actor, my voice is my livelihood. VoiceChain gives me peace of mind knowing I can detect and act on misuse.",
+                author: "Lisa M.",
+                role: "Professional Voice Actor"
+              },
+              {
+                quote: "The legal partner network connected me with a great attorney who understood my case immediately. Worth every euro.",
+                author: "Thomas K.",
+                role: "Podcast Host"
+              }
+            ].map((testimonial, i) => (
+              <div key={i} className="card">
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, j) => (
+                    <svg key={j} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-slate-600 mb-4">"{testimonial.quote}"</p>
+                <div>
+                  <p className="font-semibold text-slate-900">{testimonial.author}</p>
+                  <p className="text-sm text-slate-500">{testimonial.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -279,51 +328,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-              Trusted by Content Creators
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                quote: "VoiceChain found 12 videos using my cloned voice. The action workflow helped me get 10 of them removed within 2 weeks.",
-                author: "Marco S.",
-                role: "Tech YouTuber, 500K subscribers"
-              },
-              {
-                quote: "As a voice actor, my voice is my livelihood. VoiceChain gives me peace of mind knowing I can detect and act on misuse.",
-                author: "Lisa M.",
-                role: "Professional Voice Actor"
-              },
-              {
-                quote: "The legal partner network connected me with a great attorney who understood my case immediately. Worth every euro.",
-                author: "Thomas K.",
-                role: "Podcast Host"
-              }
-            ].map((testimonial, i) => (
-              <div key={i} className="card">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, j) => (
-                    <svg key={j} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-slate-600 mb-4">"{testimonial.quote}"</p>
-                <div>
-                  <p className="font-semibold text-slate-900">{testimonial.author}</p>
-                  <p className="text-sm text-slate-500">{testimonial.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Pricing */}
       <section className="py-20 bg-slate-50">
